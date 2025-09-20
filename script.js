@@ -1,20 +1,24 @@
 const rockButton = document.querySelector("#rock-btn");
 rockButton.addEventListener("click", () => {
     playRound("rock", getComputerChoice());
+    printWinner();
 });
 
 const paperButton = document.querySelector("#paper-btn");
 paperButton.addEventListener("click", () => {
     playRound("paper", getComputerChoice());
+    printWinner();
 });
 
 const scissorsButton = document.querySelector("#scissors-btn");
 scissorsButton.addEventListener("click", () => {
     playRound("scissors", getComputerChoice());
+    printWinner();
 });
 
-let humanScore = 0
-let computerScore = 0
+const winner = document.querySelector("#winner");
+let computerScore = 0;
+let humanScore = 0;
 
 function getComputerChoice() {
     let computerChoice = Math.floor(Math.random() * 3) + 1;
@@ -31,33 +35,35 @@ function getComputerChoice() {
 }
 
 function playRound(human, computer) {
+    clearWinner();
+
     if (human == computer) { 
-        printTie();
     } else if ((human == "rock" && computer == "scissors") || 
         (human == "paper" && computer == "rock") ||
         (human == "scissors" && computer == "paper")) {
 
-        humanScore += 1
-        printWinner("win", computer, human);
+        humanScore += 1;
     } else {
-        computerScore += 1
-        printWinner("lose", computer, human);
+        computerScore += 1;
     }
 
-    printScore()
+    printScore();
 }
 
-function printWinner(result, win, lose) {
-    const winner = document.querySelector("#winner");
-    winner.textContent = `You ${result}! ${win} beats ${lose}.`
+function printWinner() {
+    
+    if (computerScore % 5 == 0 && computerScore > humanScore) {
+        winner.textContent = `You Lose! The computer one.`;
+    } else if (humanScore % 5 == 0 && humanScore > computerScore) {
+        winner.textContent = `You Win! Congratulations.`;
+    }
+}
+
+function clearWinner() {
+    winner.textContent = "";
 }
 
 function printScore() {
     const score = document.querySelector("#score");
-    score.textContent = `Human = ${humanScore} | Computer = ${computerScore}`
-}
-
-function printTie() {
-    const tie = document.querySelector("#winner");
-    tie.textContent = `Its a tie!`
+    score.textContent = `Human = ${humanScore} | Computer = ${computerScore}`;
 }
